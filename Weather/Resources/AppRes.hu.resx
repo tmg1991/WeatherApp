@@ -126,6 +126,21 @@
   <data name="City" xml:space="preserve">
     <value>Város</value>
   </data>
+  <data name="Current" xml:space="preserve">
+    <value>Aktuális</value>
+  </data>
+  <data name="CurrentHumidity" xml:space="preserve">
+    <value>Relatív páratartalom [%]</value>
+  </data>
+  <data name="CurrentTemperature" xml:space="preserve">
+    <value>Hőmérséklet [°C]</value>
+  </data>
+  <data name="CurrentWind" xml:space="preserve">
+    <value>Szélsebesség [m/s]</value>
+  </data>
+  <data name="CurrentWindGust" xml:space="preserve">
+    <value>Széllökések [m/s]</value>
+  </data>
   <data name="ErrorPromptMessage" xml:space="preserve">
     <value>A város nem található</value>
   </data>
@@ -134,6 +149,9 @@
   </data>
   <data name="ErrorPromptTitle" xml:space="preserve">
     <value>Ooops</value>
+  </data>
+  <data name="HourlyForecast" xml:space="preserve">
+    <value>Óránkénti előrejelzés</value>
   </data>
   <data name="NewCityPromptTitle" xml:space="preserve">
     <value>Új város</value>

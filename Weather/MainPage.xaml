@@ -3,12 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:res="clr-namespace:Weather.Resources"
              xmlns:local="clr-namespace:Weather.Converters"
+             xmlns:minipages="clr-namespace:Weather.MiniPages"
              x:Class="Weather.MainPage">
 
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:InverseBooleanConverter x:Key="InverseBool"/>
         </ResourceDictionary>
+        <DataTemplate x:Key="CurrentWeatherTemplate">
+            <minipages:CurrentWeatherView />
+        </DataTemplate>
+
+        <DataTemplate x:Key="TemperatureAndPrecipitationForecastTemplate">
+            <minipages:TemperatureAndPrecipitationForecast />
+        </DataTemplate>
+
+        <minipages:CarouselTemplateSelector x:Key="CarouselSelector"
+                                        CurrentWeatherTemplate="{StaticResource CurrentWeatherTemplate}"
+                                        TemperatureAndPrecipitationForecastTemplate="{StaticResource TemperatureAndPrecipitationForecastTemplate}" />
     </ContentPage.Resources>
 
     <Grid Margin="15">
@@ -42,6 +54,11 @@
                                Color="Orange"
                                WidthRequest="150"
                                HeightRequest="150"/>
+
+        <CarouselView Grid.Row="1" IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBool}}"
+                      ItemsSource="{Binding MiniPages}" 
+                      ItemTemplate="{StaticResource CarouselSelector}"
+                      Loop="False"/>
 
     </Grid>
 

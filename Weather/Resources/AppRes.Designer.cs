@@ -88,6 +88,51 @@ namespace Weather.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current.
+        /// </summary>
+        internal static string Current {
+            get {
+                return ResourceManager.GetString("Current", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Relative Humidity [%].
+        /// </summary>
+        internal static string CurrentHumidity {
+            get {
+                return ResourceManager.GetString("CurrentHumidity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Temperature [°C].
+        /// </summary>
+        internal static string CurrentTemperature {
+            get {
+                return ResourceManager.GetString("CurrentTemperature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wind speed [m/s].
+        /// </summary>
+        internal static string CurrentWind {
+            get {
+                return ResourceManager.GetString("CurrentWind", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wind gust [m/s].
+        /// </summary>
+        internal static string CurrentWindGust {
+            get {
+                return ResourceManager.GetString("CurrentWindGust", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to City couldn&apos;t been found.
         /// </summary>
         internal static string ErrorPromptMessage {
@@ -111,6 +156,15 @@ namespace Weather.Resources {
         internal static string ErrorPromptTitle {
             get {
                 return ResourceManager.GetString("ErrorPromptTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hourly forecast.
+        /// </summary>
+        internal static string HourlyForecast {
+            get {
+                return ResourceManager.GetString("HourlyForecast", resourceCulture);
             }
         }
         

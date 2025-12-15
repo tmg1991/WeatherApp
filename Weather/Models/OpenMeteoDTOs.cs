@@ -51,7 +51,7 @@ namespace Weather.Models
         public double[] Temperature { get; set; }
 
         [JsonPropertyName("precipitation_probability")]
-        public int[] PrecipitationProbability { get; set; }
+        public double[] PrecipitationProbability { get; set; }
     }
 
     public class DailyWeather
@@ -66,7 +66,7 @@ namespace Weather.Models
         public double[] UvMax { get; set; }
 
         [JsonPropertyName("precipitation_probability_max")]
-        public int[] PrecipitationProbabilityMax { get; set; }
+        public double[] PrecipitationProbabilityMax { get; set; }
     }
 
 }

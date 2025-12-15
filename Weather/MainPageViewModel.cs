@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.Windows.Input;
 using Weather.Interfaces;
+using Weather.MiniPages;
 using Weather.Models;
 using Weather.Resources;
 
@@ -32,6 +33,19 @@ namespace Weather
             }
         }
 
+        private ObservableCollection<CarouselItem> _miniPages = new();
+
+        public ObservableCollection<CarouselItem> MiniPages
+        {
+            get { return _miniPages; }
+            set
+            { 
+                _miniPages = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+
         private bool _isBusy;
         public bool IsBusy
         {
@@ -52,9 +66,9 @@ namespace Weather
             InitSelection();
         }
 
-        private void RemoveCity() 
+        private void RemoveCity()
         {
-            if(SelectedCity == null || SelectedCity == _fakeCity)
+            if (SelectedCity == null || SelectedCity == _fakeCity)
             {
                 return;
             }
@@ -64,13 +78,13 @@ namespace Weather
             Cities.Remove(cityToBeRemoved);
             SaveCities();
             InitSelection();
-        
+
         }
 
         private void InitSelection()
         {
             var selectedCityName = Preferences.Get("SelectedCity", string.Empty);
-            if (!string.IsNullOrEmpty(selectedCityName)) 
+            if (!string.IsNullOrEmpty(selectedCityName))
             {
                 if (Cities.Any(c => c.Name == selectedCityName))
                 {
@@ -85,7 +99,7 @@ namespace Weather
         private void OnSelectedCity()
         {
             if (SelectedCity == null)
-            { 
+            {
                 return;
             }
 
@@ -123,7 +137,6 @@ namespace Weather
                     {
                         Cities.Add(newCity);
                         OrderCites();
-                        SelectedCity = newCity;
                         SaveCities();
                         SelectedCity = newCity;
                     });
@@ -147,7 +160,7 @@ namespace Weather
                 {
                     continue;
                 }
-                toBeSaved.Add(city); 
+                toBeSaved.Add(city);
             }
 
 
@@ -179,7 +192,7 @@ namespace Weather
             temp.Add(_fakeCity);
 
             Cities.Clear();
-            foreach (var city in temp) 
+            foreach (var city in temp)
             {
                 Cities.Add(city);
             }
@@ -262,11 +275,53 @@ namespace Weather
             {
                 IsBusy = true;
                 var weather = await GetWeatherForSelection();
+                MiniPages.Clear();
+                var currentWeather = new CurrentWeatherItem()
+                {
+                    Temperature = weather.Current.Temperature,
+                    RelativeHumidity = weather.Current.Humidity,
+                    WindGust = weather.Current.WindGusts,
+                    WindSpeed = weather.Current.WindSpeed
+                };
+
+                MiniPages.Add(currentWeather);
+
+                var tempearatureAndPrecipitationForecast = new TemperatureAndPrecipitationForecastItem()
+                {
+                
+                    TimeValues = ParseDatetime(weather.Hourly.Time),
+                    TemperatureForecast = weather.Hourly.Temperature.ToList(),
+                    PrecipitationForecast = weather.Hourly.PrecipitationProbability.ToList()
+                };
+
+                MiniPages.Add(tempearatureAndPrecipitationForecast);
             }
             finally
             {
                 IsBusy = false;
             }
+        }
+
+        private List<DateTime> ParseDatetime(string[] values)
+        {
+            if (values == null)
+                throw new ArgumentNullException(nameof(values));
+            var format = "yyyy-MM-dd'T'HH:mm";
+            var result = new List<DateTime>(values.Length);
+
+            foreach (var value in values)
+            {
+                result.Add(
+                    DateTime.ParseExact(
+                        value,
+                        format,
+                        CultureInfo.InvariantCulture,
+                        DateTimeStyles.None
+                    )
+                );
+            }
+
+            return result;
         }
     }
 }
