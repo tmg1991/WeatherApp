@@ -32,7 +32,6 @@
     <Grid Margin="15">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
             <RowDefinition Height="13*"/>
         </Grid.RowDefinitions>
 
@@ -55,19 +54,17 @@
 
         </Grid>
 
-        <Rectangle BackgroundColor="LightGray" Grid.Row="1" HeightRequest="2" WidthRequest="300"/>
-
-        <ActivityIndicator Grid.Row="2" IsRunning="{Binding IsBusy}" 
-                               VerticalOptions="Center" 
-                               HorizontalOptions="Center"
-                               Color="Orange"
-                               WidthRequest="150"
-                               HeightRequest="150"/>
-
-        <CarouselView Grid.Row="2" IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBool}}"
+        <CarouselView Grid.Row="1" IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBool}}"
                       ItemsSource="{Binding MiniPages}" 
                       ItemTemplate="{StaticResource CarouselSelector}"
-                      Loop="False"/>
+                      Loop="True"/>
+        
+        <ActivityIndicator Grid.Row="1" IsRunning="{Binding IsBusy}" 
+                       VerticalOptions="Center" 
+                       HorizontalOptions="Center"
+                       Color="Orange"
+                       WidthRequest="150"
+                       HeightRequest="150"/>
 
     </Grid>
 

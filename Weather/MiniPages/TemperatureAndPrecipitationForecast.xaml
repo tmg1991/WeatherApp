@@ -4,7 +4,7 @@
              xmlns:res="clr-namespace:Weather.Resources"
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
              x:Class="Weather.MiniPages.TemperatureAndPrecipitationForecast">
-    <Grid Margin="20" BackgroundColor="LightSlateGrey">
+    <Grid BackgroundColor="LightSlateGrey">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             
@@ -16,10 +16,10 @@
 
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" HorizontalOptions="Center" FontAttributes="Bold" Text="{x:Static res:AppRes.HourlyForecast}"/>
+        <Label Grid.Row="0" HorizontalOptions="Center" FontAttributes="Bold" Text="{x:Static res:AppRes.HourlyForecast}" Margin="10" FontSize="Large"/>
 
         <lvc:CartesianChart Grid.Row="1"
-                            LegendPosition="Top" Background="LightSalmon">
+                            LegendPosition="Top" Background="LightSalmon" Margin="10">
             <lvc:CartesianChart.Series>
                 <lvc:SeriesCollection>
                     <lvc:XamlLineSeries
@@ -30,7 +30,7 @@
         </lvc:CartesianChart>
 
         <lvc:CartesianChart Grid.Row="2"
-                            LegendPosition="Top" BackgroundColor="SkyBlue">
+                            LegendPosition="Top" BackgroundColor="SkyBlue" Margin="10">
             <lvc:CartesianChart.Series>
                 <lvc:SeriesCollection>
                     <lvc:XamlLineSeries
