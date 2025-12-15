@@ -64,6 +64,15 @@ namespace Weather
             }
             Cities.Add(_fakeCity);
             InitSelection();
+            App.AppResumed += OnAppResumed;
+        }
+
+        public void OnAppResumed()
+        {
+            var t = Task.Run(async () => {
+                await VisualizeWeather();
+            });
+            t.Wait();
         }
 
         private void RemoveCity()
