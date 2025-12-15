@@ -138,4 +138,10 @@
   <data name="NewCityPromptTitle" xml:space="preserve">
     <value>Új város</value>
   </data>
+  <data name="TimeOutMessage" xml:space="preserve">
+    <value>A kérés időtúllépés miatt megszakadt</value>
+  </data>
+  <data name="TimeOutTitle" xml:space="preserve">
+    <value>Időtúllépés</value>
+  </data>
 </root>

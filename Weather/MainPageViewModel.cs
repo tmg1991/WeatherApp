@@ -17,6 +17,7 @@ namespace Weather
         private readonly City _fakeCity = new City(AppRes.Add_new_city, new GeoLocation(0, 0));
         private readonly IDialogService _dialogService;
         private readonly Serializer _serializer;
+        public ICommand RemoveCityCommand { get; init; }
         private City selectedCity;
 
         public ObservableCollection<City> Cities { get; } = new ObservableCollection<City>();
@@ -42,6 +43,7 @@ namespace Weather
         {
             _dialogService = dialogService;
             _serializer = serializer;
+            RemoveCityCommand = new Command(RemoveCity);
             foreach (var city in LoadCities())
             {
                 Cities.Add(city);
@@ -50,14 +52,33 @@ namespace Weather
             InitSelection();
         }
 
+        private void RemoveCity() 
+        {
+            if(SelectedCity == null || SelectedCity == _fakeCity)
+            {
+                return;
+            }
+
+            var cityToBeRemoved = SelectedCity;
+            SelectedCity = null;
+            Cities.Remove(cityToBeRemoved);
+            SaveCities();
+            InitSelection();
+        
+        }
+
         private void InitSelection()
         {
             var selectedCityName = Preferences.Get("SelectedCity", string.Empty);
             if (!string.IsNullOrEmpty(selectedCityName)) 
             {
-                SelectedCity = Cities.FirstOrDefault(c => selectedCityName == c.Name);
-                return;
+                if(Cities.Any(c => c.Name == selectedCityName))
+                {
+                    SelectedCity = Cities.First(c => selectedCityName == c.Name);
+                }
             }
+
+            SelectedCity = Cities.Where(c => c != _fakeCity)?.FirstOrDefault();
 
         }
 
@@ -83,23 +104,31 @@ namespace Weather
             {
                 var cityNameTypedIn = await _dialogService.ShowPromptAsync(AppRes.NewCityPromptTitle, AppRes.AddNewCityPromptMessage);
                 IsBusy = true;
-                var newCity = await GetCityAsync(cityNameTypedIn);
-                IsBusy = false;
-                if (newCity == null) {
-                    await _dialogService.ShowAlertAsync(AppRes.ErrorPromptTitle, AppRes.ErrorPromptMessage, AppRes.ErrorPromptOk);
+                try
+                {
+                    var newCity = await GetCityAsync(cityNameTypedIn);
+                    IsBusy = false;
+                    if (newCity == null)
+                    {
+                        await _dialogService.ShowAlertAsync(AppRes.ErrorPromptTitle, AppRes.ErrorPromptMessage, AppRes.ErrorPromptOk);
+                        SelectedCity = null;
+                        return;
+                    }
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        Cities.Add(newCity);
+                        OrderCites();
+                        SelectedCity = newCity;
+                        SaveCities();
+                    });
+                }
+                catch (TaskCanceledException)
+                {
+                    IsBusy = false;
+                    await _dialogService.ShowAlertAsync(AppRes.TimeOutTitle, AppRes.TimeOutMessage, AppRes.ErrorPromptOk);
                     SelectedCity = null;
                     return;
                 }
-
-                MainThread.BeginInvokeOnMainThread(() =>
-                {
-                    Cities.Add(newCity);
-                    OrderCites();
-                    SelectedCity = newCity;
-                    SaveCities();
-                });
-                
-                
             });
         }
 
@@ -154,6 +183,7 @@ namespace Weather
         public async Task<City> GetCityAsync(string city)
         {
             using var client = new HttpClient();
+            client.Timeout = TimeSpan.FromSeconds(10);
             client.DefaultRequestHeaders.Add("User-Agent", "MyApp"); // required by Nominatim
 
             var url = $"https://nominatim.openstreetmap.org/search" +

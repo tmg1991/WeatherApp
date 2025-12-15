@@ -122,5 +122,23 @@ namespace Weather.Resources {
                 return ResourceManager.GetString("NewCityPromptTitle", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request timed out.
+        /// </summary>
+        internal static string TimeOutMessage {
+            get {
+                return ResourceManager.GetString("TimeOutMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timeout.
+        /// </summary>
+        internal static string TimeOutTitle {
+            get {
+                return ResourceManager.GetString("TimeOutTitle", resourceCulture);
+            }
+        }
     }
 }
