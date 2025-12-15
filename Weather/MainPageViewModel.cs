@@ -98,6 +98,7 @@ namespace Weather
                 if (Cities.Any(c => c.Name == selectedCityName))
                 {
                     SelectedCity = Cities.First(c => selectedCityName == c.Name);
+                    return;
                 }
             }
 
