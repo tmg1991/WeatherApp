@@ -142,6 +142,11 @@ namespace Weather
                         SelectedCity = null;
                         return;
                     }
+                    if(Cities.Any(c => c.Name == newCity.Name))
+                    {
+                        SelectedCity = Cities.First(c => c.Name == newCity.Name);
+                        return;
+                    }
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
                         Cities.Add(newCity);
