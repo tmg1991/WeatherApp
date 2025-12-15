@@ -116,11 +116,18 @@ namespace Weather
             if (SelectedCity != _fakeCity)
             {
                 Preferences.Set("SelectedCity", SelectedCity.Name);
-                var weatherTask = Task.Run(async () =>
+                try
                 {
-                    await VisualizeWeather();
-                });
-                weatherTask.Wait();
+                    var weatherTask = Task.Run(async () =>
+                    {
+                        await VisualizeWeather();   
+                    });
+                    weatherTask.Wait();
+                }
+                catch (Exception)
+                {
+                    //ignore, there might be no GUI yet
+                }
                 return;
             }
 
