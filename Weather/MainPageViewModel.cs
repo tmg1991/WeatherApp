@@ -288,8 +288,6 @@ namespace Weather
 
                 var tempearatureAndPrecipitationForecast = new TemperatureAndPrecipitationForecastItem()
                 {
-                
-                    TimeValues = ParseDatetime(weather.Hourly.Time),
                     TemperatureForecast = weather.Hourly.Temperature.ToList(),
                     PrecipitationForecast = weather.Hourly.PrecipitationProbability.ToList()
                 };
@@ -300,28 +298,6 @@ namespace Weather
             {
                 IsBusy = false;
             }
-        }
-
-        private List<DateTime> ParseDatetime(string[] values)
-        {
-            if (values == null)
-                throw new ArgumentNullException(nameof(values));
-            var format = "yyyy-MM-dd'T'HH:mm";
-            var result = new List<DateTime>(values.Length);
-
-            foreach (var value in values)
-            {
-                result.Add(
-                    DateTime.ParseExact(
-                        value,
-                        format,
-                        CultureInfo.InvariantCulture,
-                        DateTimeStyles.None
-                    )
-                );
-            }
-
-            return result;
         }
     }
 }

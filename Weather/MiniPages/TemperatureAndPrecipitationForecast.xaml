@@ -2,24 +2,46 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:res="clr-namespace:Weather.Resources"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
              x:Class="Weather.MiniPages.TemperatureAndPrecipitationForecast">
     <Grid Margin="20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
+            
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
             <RowDefinition Height="2*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="Center" FontAttributes="Bold" Text="{x:Static res:AppRes.HourlyForecast}"/>
+        <Label Grid.Row="0" HorizontalOptions="Center" FontAttributes="Bold" Text="{x:Static res:AppRes.HourlyForecast}"/>
 
-        
+        <lvc:CartesianChart Grid.Row="1"
+                            LegendPosition="Top" Background="LightSalmon">
+            <lvc:CartesianChart.Series>
+                <lvc:SeriesCollection>
+                    <lvc:XamlLineSeries
+                    SeriesName="{x:Static res:AppRes.CurrentTemperature}"
+                    Values="{Binding TemperatureForecast}"/>
+                </lvc:SeriesCollection>
+            </lvc:CartesianChart.Series>
+        </lvc:CartesianChart>
 
-        
+        <lvc:CartesianChart Grid.Row="2"
+                            LegendPosition="Top" BackgroundColor="SkyBlue">
+            <lvc:CartesianChart.Series>
+                <lvc:SeriesCollection>
+                    <lvc:XamlLineSeries
+            SeriesName="{x:Static res:AppRes.PrecipitationProbability}"
+            Values="{Binding PrecipitationForecast}"/>
+                </lvc:SeriesCollection>
+            </lvc:CartesianChart.Series>
+        </lvc:CartesianChart>
+
+
+
+
     </Grid>
 </ContentView>

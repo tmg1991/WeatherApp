@@ -156,6 +156,9 @@
   <data name="NewCityPromptTitle" xml:space="preserve">
     <value>Add new city</value>
   </data>
+  <data name="PrecipitationProbability" xml:space="preserve">
+    <value>Precipitation probability [%]</value>
+  </data>
   <data name="TimeOutMessage" xml:space="preserve">
     <value>Request timed out</value>
   </data>

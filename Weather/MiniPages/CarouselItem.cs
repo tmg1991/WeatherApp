@@ -18,7 +18,6 @@ namespace Weather.MiniPages
 
     public class TemperatureAndPrecipitationForecastItem : CarouselItem
     {
-        public List<DateTime> TimeValues { get; set; }
         public List<double> TemperatureForecast { get; set; }
         public List<double> PrecipitationForecast { get; set; }
     }

@@ -178,6 +178,15 @@ namespace Weather.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Precipitation probability [%].
+        /// </summary>
+        internal static string PrecipitationProbability {
+            get {
+                return ResourceManager.GetString("PrecipitationProbability", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Request timed out.
         /// </summary>
         internal static string TimeOutMessage {
