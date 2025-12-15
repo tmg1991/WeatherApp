@@ -72,7 +72,7 @@ namespace Weather
             var selectedCityName = Preferences.Get("SelectedCity", string.Empty);
             if (!string.IsNullOrEmpty(selectedCityName)) 
             {
-                if(Cities.Any(c => c.Name == selectedCityName))
+                if (Cities.Any(c => c.Name == selectedCityName))
                 {
                     SelectedCity = Cities.First(c => selectedCityName == c.Name);
                 }
@@ -84,14 +84,19 @@ namespace Weather
 
         private void OnSelectedCity()
         {
-            if(SelectedCity == null)
+            if (SelectedCity == null)
             { 
                 return;
             }
 
-            if(SelectedCity != _fakeCity)
+            if (SelectedCity != _fakeCity)
             {
                 Preferences.Set("SelectedCity", SelectedCity.Name);
+                var weatherTask = Task.Run(async () =>
+                {
+                    await VisualizeWeather();
+                });
+                weatherTask.Wait();
                 return;
             }
 
@@ -120,6 +125,7 @@ namespace Weather
                         OrderCites();
                         SelectedCity = newCity;
                         SaveCities();
+                        SelectedCity = newCity;
                     });
                 }
                 catch (TaskCanceledException)
@@ -137,7 +143,7 @@ namespace Weather
             var toBeSaved = new ObservableCollection<City>();
             foreach (var city in Cities)
             {
-                if(city == _fakeCity)
+                if (city == _fakeCity)
                 {
                     continue;
                 }
@@ -165,7 +171,7 @@ namespace Weather
         private void OrderCites()
         {
             var temp = new List<City>();
-            foreach(var city in Cities.OrderBy(c => c.Name))
+            foreach (var city in Cities.OrderBy(c => c.Name))
             {
                 temp.Add(city);
             }
@@ -180,7 +186,7 @@ namespace Weather
         }
 
 
-        public async Task<City> GetCityAsync(string city)
+        private async Task<City> GetCityAsync(string city)
         {
             using var client = new HttpClient();
             client.Timeout = TimeSpan.FromSeconds(10);
@@ -201,7 +207,7 @@ namespace Weather
             var latValue = item.GetProperty("lat");
             var latAsString = latValue.GetString();
 
-            if(!double.TryParse(latAsString, CultureInfo.InvariantCulture, out var lat))
+            if (!double.TryParse(latAsString, CultureInfo.InvariantCulture, out var lat))
             {
 
             }
@@ -216,6 +222,51 @@ namespace Weather
             var location = new GeoLocation(lon, lat);
             var cityName = item.GetProperty("name").GetString();
             return new City(cityName, location);
+        }
+
+        private async Task<OpenMeteoResponse?> GetWeatherForSelection()
+        {
+
+            string url =
+            "https://api.open-meteo.com/v1/forecast" +
+            "?latitude=" + SelectedCity.Geolocation.Lat.ToString(CultureInfo.InvariantCulture) +
+            "&longitude=" + SelectedCity.Geolocation.Lon.ToString(CultureInfo.InvariantCulture) +
+            "&daily=temperature_2m_max,temperature_2m_min,uv_index_max,precipitation_probability_max" +
+            "&hourly=temperature_2m,precipitation_probability,wind_speed_10m,wind_gusts_10m" +
+            "&current=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m,wind_direction_10m,wind_gusts_10m" +
+            "&timezone=Europe/Berlin" +
+            "&forecast_days=1";
+
+            using var client = new HttpClient();
+            client.Timeout = TimeSpan.FromSeconds(10);
+            var response = await client.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+
+            return JsonSerializer.Deserialize<OpenMeteoResponse>(
+                json,
+                new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+        }
+
+        private async Task VisualizeWeather()
+        {
+            if(SelectedCity == null)
+            {
+                return;
+            }
+            try
+            {
+                IsBusy = true;
+                var weather = await GetWeatherForSelection();
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
     }
 }
