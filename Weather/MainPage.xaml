@@ -4,7 +4,8 @@
              xmlns:res="clr-namespace:Weather.Resources"
              xmlns:local="clr-namespace:Weather.Converters"
              xmlns:minipages="clr-namespace:Weather.MiniPages"
-             x:Class="Weather.MainPage">
+             x:Class="Weather.MainPage"
+             BackgroundColor="LightGray">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -18,9 +19,14 @@
             <minipages:TemperatureAndPrecipitationForecast />
         </DataTemplate>
 
+        <DataTemplate x:Key="WindForecastTemplate">
+            <minipages:WindForecast />
+        </DataTemplate>
+
         <minipages:CarouselTemplateSelector x:Key="CarouselSelector"
-                                        CurrentWeatherTemplate="{StaticResource CurrentWeatherTemplate}"
-                                        TemperatureAndPrecipitationForecastTemplate="{StaticResource TemperatureAndPrecipitationForecastTemplate}" />
+                                            CurrentWeatherTemplate="{StaticResource CurrentWeatherTemplate}"
+                                            TemperatureAndPrecipitationForecastTemplate="{StaticResource TemperatureAndPrecipitationForecastTemplate}"
+                                            WindForecastTemplate="{StaticResource WindForecastTemplate}"/>
     </ContentPage.Resources>
 
     <Grid Margin="15">

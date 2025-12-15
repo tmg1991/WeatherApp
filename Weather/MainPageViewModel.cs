@@ -293,6 +293,14 @@ namespace Weather
                 };
 
                 MiniPages.Add(tempearatureAndPrecipitationForecast);
+
+                var windForecast = new WindForecastItem()
+                {
+                    WindGustForecast = weather.Hourly.WindGust.ToList(),
+                    WindSpeedForecast = weather.Hourly.WindSpeed.ToList()
+                };
+
+                MiniPages.Add(windForecast);
             }
             finally
             {

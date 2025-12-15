@@ -8,6 +8,7 @@ namespace Weather.MiniPages
     {
         public DataTemplate CurrentWeatherTemplate { get; set; }
         public DataTemplate TemperatureAndPrecipitationForecastTemplate { get; set; }
+        public DataTemplate WindForecastTemplate { get; set; }
 
         protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
         {
@@ -15,6 +16,7 @@ namespace Weather.MiniPages
             {
                 TemperatureAndPrecipitationForecastItem => TemperatureAndPrecipitationForecastTemplate,
                 CurrentWeatherItem => CurrentWeatherTemplate,
+                WindForecastItem => WindForecastTemplate,
                 _ => null
             };
         }

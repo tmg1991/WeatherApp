@@ -21,4 +21,10 @@ namespace Weather.MiniPages
         public List<double> TemperatureForecast { get; set; }
         public List<double> PrecipitationForecast { get; set; }
     }
+
+    public class WindForecastItem : CarouselItem
+    {
+        public List<double> WindSpeedForecast { get; set; }
+        public List<double> WindGustForecast { get; set; }
+    }
 }

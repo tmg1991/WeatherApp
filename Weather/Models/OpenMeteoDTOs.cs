@@ -52,6 +52,12 @@ namespace Weather.Models
 
         [JsonPropertyName("precipitation_probability")]
         public double[] PrecipitationProbability { get; set; }
+
+        [JsonPropertyName("wind_speed_10m")]
+        public double[] WindSpeed { get; set; }
+
+        [JsonPropertyName("wind_gusts_10m")]
+        public double[] WindGust { get; set; }
     }
 
     public class DailyWeather
